@@ -1,0 +1,31 @@
+@startuml
+title Thiết kế ban đầu (2 thao tác)
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+interface ItemElement { +accept(v: ShoppingCartVisitor): double }
+interface PhysicalItem { +getWeight(): double }
+interface DigitalItem { +getDownloadSizeMB(): double }
+class Sneaker { -brand: String\n-price: double\n-weight: double }
+class FreshFood { -name: String\n-pricePerKg: double\n-weight: double }
+class EBook { -title: String\n-price: double\n-downloadSizeMB: double }
+class SoftwareLicense { -softwareName: String\n-annualFee: double\n-downloadSizeMB: double }
+interface ShoppingCartVisitor {
+  +visit(sneaker: Sneaker): double
+  +visit(food: FreshFood): double
+  +visit(ebook: EBook): double
+  +visit(license: SoftwareLicense): double
+}
+class PriceCalculatorVisitor
+class ShippingFeeVisitor
+class ShoppingCart #LightYellow { -items: List<ItemElement>\n+calculate(v): double }
+ItemElement <|-- PhysicalItem
+ItemElement <|-- DigitalItem
+PhysicalItem <|.. Sneaker
+PhysicalItem <|.. FreshFood
+DigitalItem <|.. EBook
+DigitalItem <|.. SoftwareLicense
+ItemElement ..> ShoppingCartVisitor : uses
+ShoppingCartVisitor <|.. PriceCalculatorVisitor
+ShoppingCartVisitor <|.. ShippingFeeVisitor
+ShoppingCart o-- "0..*" ItemElement
+@enduml

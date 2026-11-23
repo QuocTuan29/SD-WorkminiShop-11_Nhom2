@@ -1,0 +1,34 @@
+@startuml
+title Thiết kế điều chỉnh: thêm 2 thao tác (màu xanh)
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+interface ItemElement
+interface PhysicalItem { +getWeight(): double }
+interface DigitalItem { +getDownloadSizeMB(): double }
+class Sneaker
+class FreshFood
+class EBook
+class SoftwareLicense
+interface ShoppingCartVisitor {
+  +visit(Sneaker): double
+  +visit(FreshFood): double
+  +visit(EBook): double
+  +visit(SoftwareLicense): double
+}
+class PriceCalculatorVisitor
+class ShippingFeeVisitor
+class DiscountVoucherVisitor <<New>> #LightGreen
+class CarbonFootprintVisitor <<New>> #LightGreen
+ItemElement <|-- PhysicalItem
+ItemElement <|-- DigitalItem
+PhysicalItem <|.. Sneaker
+PhysicalItem <|.. FreshFood
+DigitalItem <|.. EBook
+DigitalItem <|.. SoftwareLicense
+ItemElement ..> ShoppingCartVisitor : uses
+ShoppingCartVisitor <|.. PriceCalculatorVisitor
+ShoppingCartVisitor <|.. ShippingFeeVisitor
+ShoppingCartVisitor <|.. DiscountVoucherVisitor
+ShoppingCartVisitor <|.. CarbonFootprintVisitor
+note bottom of DiscountVoucherVisitor : Chỉ thêm lớp mới,\nkhông sửa các mặt hàng
+@enduml
